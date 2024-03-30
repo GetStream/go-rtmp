@@ -10,12 +10,14 @@ package rtmp
 import (
 	"math"
 
+	"github.com/guerinoni/go-rtmp/message"
 	"github.com/pkg/errors"
-	"github.com/yutopp/go-rtmp/message"
 )
 
-const DefaultChunkSize = 128
-const MaxChunkSize = 0xffffff // 5.4.1
+const (
+	DefaultChunkSize = 128
+	MaxChunkSize     = 0xffffff // 5.4.1
+)
 
 type StreamControlState struct {
 	chunkSize           uint32

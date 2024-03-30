@@ -8,10 +8,9 @@
 package rtmp
 
 import (
+	"github.com/guerinoni/go-rtmp/internal"
+	"github.com/guerinoni/go-rtmp/message"
 	"github.com/pkg/errors"
-
-	"github.com/yutopp/go-rtmp/internal"
-	"github.com/yutopp/go-rtmp/message"
 )
 
 var _ stateHandler = (*serverControlConnectedHandler)(nil)

@@ -14,10 +14,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/guerinoni/go-rtmp/message"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-
-	"github.com/yutopp/go-rtmp/message"
 )
 
 const ctrlMsgChunkStreamID = 2
@@ -120,7 +119,7 @@ func (cs *ChunkStreamer) Write(
 	if err != nil {
 		return err
 	}
-	//defer writer.Close()
+	// defer writer.Close()
 
 	cs.msgEnc.Reset(writer)
 	if err := cs.msgEnc.Encode(cmsg.Message); err != nil {
@@ -198,13 +197,13 @@ func (cs *ChunkStreamer) readChunk() (*ChunkStreamReader, error) {
 	if err := decodeChunkBasicHeader(cs.r, cs.cacheBuffer, &bh); err != nil {
 		return nil, err
 	}
-	//cs.logger.Debugf("(READ) BasicHeader = %+v", bh)
+	// cs.logger.Debugf("(READ) BasicHeader = %+v", bh)
 
 	var mh chunkMessageHeader
 	if err := decodeChunkMessageHeader(cs.r, bh.fmt, cs.cacheBuffer, &mh); err != nil {
 		return nil, err
 	}
-	//cs.logger.Debugf("(READ) MessageHeader = %+v", mh)
+	// cs.logger.Debugf("(READ) MessageHeader = %+v", mh)
 
 	reader, err := cs.prepareChunkReader(bh.chunkStreamID)
 	if err != nil {
@@ -241,7 +240,7 @@ func (cs *ChunkStreamer) readChunk() (*ChunkStreamReader, error) {
 		return nil, errors.Wrapf(err, "unsupported chunk")
 	}
 
-	//cs.logger.Debugf("(READ) MessageLength = %d, Current = %d", reader.messageLength, reader.buf.Len())
+	// cs.logger.Debugf("(READ) MessageLength = %d, Current = %d", reader.messageLength, reader.buf.Len())
 
 	expectLen := int(reader.messageLength) - reader.buf.Len()
 	if expectLen <= 0 {
@@ -251,13 +250,13 @@ func (cs *ChunkStreamer) readChunk() (*ChunkStreamReader, error) {
 	if uint32(expectLen) > cs.peerState.chunkSize {
 		expectLen = int(cs.peerState.chunkSize)
 	}
-	//cs.logger.Debugf("(READ) Length = %d", expectLen)
+	// cs.logger.Debugf("(READ) Length = %d", expectLen)
 
 	lr := io.LimitReader(cs.r, int64(expectLen))
 	if _, err := io.CopyBuffer(&reader.buf, lr, cs.cacheBuffer); err != nil {
 		return nil, err
 	}
-	//cs.logger.Debugf("(READ) Buffer: %+v", reader.buf.Bytes())
+	// cs.logger.Debugf("(READ) Buffer: %+v", reader.buf.Bytes())
 
 	if int(reader.messageLength)-reader.buf.Len() != 0 {
 		// fragmented
@@ -274,8 +273,8 @@ func (cs *ChunkStreamer) readChunk() (*ChunkStreamReader, error) {
 func (cs *ChunkStreamer) writeChunk(writer *ChunkStreamWriter) (bool, error) {
 	cs.updateWriterHeader(writer)
 
-	//cs.logger.Debugf("(WRITE) Headers: Basic = %+v / Message = %+v", writer.basicHeader, writer.messageHeader)
-	//cs.logger.Debugf("(WRITE) Buffer: %+v", writer.buf.Bytes())
+	// cs.logger.Debugf("(WRITE) Headers: Basic = %+v / Message = %+v", writer.basicHeader, writer.messageHeader)
+	// cs.logger.Debugf("(WRITE) Buffer: %+v", writer.buf.Bytes())
 
 	expectLen := writer.buf.Len()
 	if uint32(expectLen) > cs.selfState.chunkSize {
@@ -356,7 +355,7 @@ func (cs *ChunkStreamer) forceCloseWriters() {
 	defer cs.mu.Unlock()
 
 	for _, writer := range cs.writers {
-		//writer.lastErr = cs.err
+		// writer.lastErr = cs.err
 		close(writer.closeCh)
 	}
 }

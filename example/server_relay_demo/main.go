@@ -4,8 +4,8 @@ import (
 	"io"
 	"net"
 
+	"github.com/guerinoni/go-rtmp"
 	log "github.com/sirupsen/logrus"
-	"github.com/yutopp/go-rtmp"
 )
 
 func main() {
@@ -24,7 +24,7 @@ func main() {
 	srv := rtmp.NewServer(&rtmp.ServerConfig{
 		OnConnect: func(conn net.Conn) (io.ReadWriteCloser, *rtmp.ConnConfig) {
 			l := log.StandardLogger()
-			//l.SetLevel(logrus.DebugLevel)
+			// l.SetLevel(logrus.DebugLevel)
 
 			h := &Handler{
 				relayService: relayService,

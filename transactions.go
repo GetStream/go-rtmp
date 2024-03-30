@@ -12,9 +12,8 @@ import (
 	"io"
 	"sync"
 
+	"github.com/guerinoni/go-rtmp/message"
 	"github.com/pkg/errors"
-
-	"github.com/yutopp/go-rtmp/message"
 )
 
 type transaction struct {

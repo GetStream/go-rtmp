@@ -11,14 +11,12 @@ import (
 	"bufio"
 	"context"
 	"io"
-	"io/ioutil"
 	"sync"
 
+	"github.com/guerinoni/go-rtmp/message"
 	"github.com/hashicorp/go-multierror"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-
-	"github.com/yutopp/go-rtmp/message"
 )
 
 type Conn struct {
@@ -73,7 +71,7 @@ func (cb *ConnConfig) normalize() *ConnConfig {
 
 	if c.Logger == nil {
 		l := logrus.New()
-		l.Out = ioutil.Discard
+		l.Out = io.Discard
 
 		c.Logger = l
 	}

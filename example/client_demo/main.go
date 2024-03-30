@@ -1,10 +1,9 @@
 package main
 
 import (
+	"github.com/guerinoni/go-rtmp"
+	rtmpmsg "github.com/guerinoni/go-rtmp/message"
 	log "github.com/sirupsen/logrus"
-
-	"github.com/yutopp/go-rtmp"
-	rtmpmsg "github.com/yutopp/go-rtmp/message"
 )
 
 const (

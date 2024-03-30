@@ -12,10 +12,9 @@ import (
 	"context"
 	"time"
 
+	"github.com/guerinoni/go-rtmp/message"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-
-	"github.com/yutopp/go-rtmp/message"
 )
 
 // Stream represents a logical message stream
@@ -109,7 +108,7 @@ func (s *Stream) Connect(
 		return result, nil
 	}
 
-	//return nil, errors.New("Failed to get result")
+	// return nil, errors.New("Failed to get result")
 }
 
 func (s *Stream) ReplyConnect(
@@ -190,7 +189,7 @@ func (s *Stream) CreateStream(body *message.NetConnectionCreateStream, chunkSize
 		return result, nil
 	}
 
-	//return nil, errors.New("Failed to get result")
+	// return nil, errors.New("Failed to get result")
 }
 
 func (s *Stream) DeleteStream(body *message.NetStreamDeleteStream) error {

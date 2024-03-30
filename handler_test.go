@@ -10,9 +10,8 @@ package rtmp
 import (
 	"testing"
 
+	"github.com/guerinoni/go-rtmp/message"
 	"github.com/stretchr/testify/require"
-
-	"github.com/yutopp/go-rtmp/message"
 )
 
 func TestHandlerCallback(t *testing.T) {

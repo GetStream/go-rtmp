@@ -11,9 +11,8 @@ import (
 	"bytes"
 	"testing"
 
+	"github.com/guerinoni/go-rtmp/message"
 	"github.com/stretchr/testify/require"
-
-	"github.com/yutopp/go-rtmp/message"
 )
 
 func TestConnConfig(t *testing.T) {

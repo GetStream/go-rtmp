@@ -10,11 +10,10 @@ package rtmp
 import (
 	"sync"
 
+	"github.com/guerinoni/go-rtmp/internal"
+	"github.com/guerinoni/go-rtmp/message"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-
-	"github.com/yutopp/go-rtmp/internal"
-	"github.com/yutopp/go-rtmp/message"
 )
 
 type streamState int

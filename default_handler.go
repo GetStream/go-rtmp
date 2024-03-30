@@ -10,13 +10,12 @@ package rtmp
 import (
 	"io"
 
-	"github.com/yutopp/go-rtmp/message"
+	"github.com/guerinoni/go-rtmp/message"
 )
 
 var _ Handler = (*DefaultHandler)(nil)
 
-type DefaultHandler struct {
-}
+type DefaultHandler struct{}
 
 func (h *DefaultHandler) OnServe(conn *Conn) {
 }

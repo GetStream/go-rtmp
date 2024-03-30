@@ -8,11 +8,11 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/guerinoni/go-rtmp"
+	rtmpmsg "github.com/guerinoni/go-rtmp/message"
 	"github.com/pkg/errors"
 	"github.com/yutopp/go-flv"
 	flvtag "github.com/yutopp/go-flv/tag"
-	"github.com/yutopp/go-rtmp"
-	rtmpmsg "github.com/yutopp/go-rtmp/message"
 )
 
 var _ rtmp.Handler = (*Handler)(nil)
@@ -50,7 +50,7 @@ func (h *Handler) OnPublish(_ *rtmp.StreamContext, timestamp uint32, cmd *rtmpms
 		os.TempDir(),
 		filepath.Clean(filepath.Join("/", fmt.Sprintf("%s.flv", cmd.PublishingName))),
 	)
-	f, err := os.OpenFile(p, os.O_CREATE|os.O_WRONLY, 0666)
+	f, err := os.OpenFile(p, os.O_CREATE|os.O_WRONLY, 0o666)
 	if err != nil {
 		return errors.Wrap(err, "Failed to create flv file")
 	}
