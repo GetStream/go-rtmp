@@ -13,7 +13,7 @@ import (
 	"io"
 	"sync"
 
-	"github.com/guerinoni/go-rtmp/message"
+	"github.com/GetStream/go-rtmp/message"
 	"github.com/hashicorp/go-multierror"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

@@ -11,10 +11,10 @@ RTMP 1.0 server/client library written in Go.
 ## Installation
 
 ```
-go get github.com/guerinoni/go-rtmp
+go get github.com/GetStream/go-rtmp
 ```
 
-See also [server_demo](https://github.com/guerinoni/go-rtmp/tree/master/example/server_demo) and [client_demo](https://github.com/guerinoni/go-rtmp/blob/master/example/client_demo/main.go).
+See also [server_demo](https://github.com/GetStream/go-rtmp/tree/master/example/server_demo) and [client_demo](https://github.com/GetStream/go-rtmp/blob/master/example/client_demo/main.go).
 
 ## Documentation
 

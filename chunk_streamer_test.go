@@ -17,8 +17,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GetStream/go-rtmp/message"
 	"github.com/fortytw2/leaktest"
-	"github.com/guerinoni/go-rtmp/message"
 	"github.com/stretchr/testify/require"
 )
 

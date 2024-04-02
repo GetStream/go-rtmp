@@ -10,8 +10,8 @@ package rtmp
 import (
 	"sync"
 
-	"github.com/guerinoni/go-rtmp/internal"
-	"github.com/guerinoni/go-rtmp/message"
+	"github.com/GetStream/go-rtmp/internal"
+	"github.com/GetStream/go-rtmp/message"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/guerinoni/go-rtmp"
-	rtmpmsg "github.com/guerinoni/go-rtmp/message"
+	"github.com/GetStream/go-rtmp"
+	rtmpmsg "github.com/GetStream/go-rtmp/message"
 	log "github.com/sirupsen/logrus"
 )
 

@@ -4,7 +4,7 @@ import (
 	"io"
 	"net"
 
-	"github.com/guerinoni/go-rtmp"
+	"github.com/GetStream/go-rtmp"
 	log "github.com/sirupsen/logrus"
 )
 

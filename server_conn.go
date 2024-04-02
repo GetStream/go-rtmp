@@ -8,7 +8,7 @@
 package rtmp
 
 import (
-	"github.com/guerinoni/go-rtmp/handshake"
+	"github.com/GetStream/go-rtmp/handshake"
 	"github.com/pkg/errors"
 )
 

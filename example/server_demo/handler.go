@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/guerinoni/go-rtmp"
-	rtmpmsg "github.com/guerinoni/go-rtmp/message"
+	"github.com/GetStream/go-rtmp"
+	rtmpmsg "github.com/GetStream/go-rtmp/message"
 	"github.com/pkg/errors"
 	"github.com/yutopp/go-flv"
 	flvtag "github.com/yutopp/go-flv/tag"

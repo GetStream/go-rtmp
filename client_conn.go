@@ -11,8 +11,8 @@ import (
 	"net"
 	"sync"
 
-	"github.com/guerinoni/go-rtmp/handshake"
-	"github.com/guerinoni/go-rtmp/message"
+	"github.com/GetStream/go-rtmp/handshake"
+	"github.com/GetStream/go-rtmp/message"
 	"github.com/pkg/errors"
 )
 

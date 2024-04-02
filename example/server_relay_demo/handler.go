@@ -5,8 +5,8 @@ import (
 	"io"
 	"log"
 
-	"github.com/guerinoni/go-rtmp"
-	rtmpmsg "github.com/guerinoni/go-rtmp/message"
+	"github.com/GetStream/go-rtmp"
+	rtmpmsg "github.com/GetStream/go-rtmp/message"
 	"github.com/pkg/errors"
 	flvtag "github.com/yutopp/go-flv/tag"
 )

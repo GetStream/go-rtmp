@@ -10,7 +10,7 @@ package rtmp
 import (
 	"testing"
 
-	"github.com/guerinoni/go-rtmp/message"
+	"github.com/GetStream/go-rtmp/message"
 )
 
 func BenchmarkHandlePublisherVideoMessage(b *testing.B) {

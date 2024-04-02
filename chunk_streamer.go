@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/guerinoni/go-rtmp/message"
+	"github.com/GetStream/go-rtmp/message"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

@@ -1,4 +1,4 @@
-module github.com/guerinoni/go-rtmp
+module github.com/GetStream/go-rtmp
 
 go 1.18
 
