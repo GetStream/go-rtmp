@@ -45,7 +45,7 @@ type StreamControlStateConfig struct {
 }
 
 func (cb *StreamControlStateConfig) normalize() *StreamControlStateConfig {
-	c := StreamControlStateConfig(*cb)
+	c := *cb
 
 	// chunks
 

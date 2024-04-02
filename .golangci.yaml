@@ -1,3 +1,42 @@
 linters:
   enable:
-    - nilerr
+    - durationcheck
+    - errcheck
+    - errname
+    - errorlint
+    - forcetypeassert
+    - gocheckcompilerdirectives
+    - gocognit
+    - gocritic
+    - godot
+    - gofumpt
+    - goprintffuncname
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - maintidx
+    - mirror
+    - misspell
+    - nakedret
+    - nestif
+    - nolintlint
+    - prealloc
+    - sloglint
+    - staticcheck
+    - tenv
+    - thelper
+    - unconvert
+    - unparam
+    - unused
+    - wastedassign
+
+issues:
+  exclude-use-default: false # Whoah, these are terrible.
+  exclude-rules:
+    - path: "example/*"
+      linters:
+        - gocritic
+        - gosec
+        - errcheck

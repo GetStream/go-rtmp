@@ -38,7 +38,10 @@ func (srv *Server) Serve(l net.Listener) error {
 		return errors.Wrap(err, "Already served")
 	}
 
-	defer l.Close()
+	defer func() {
+		err := l.Close()
+		_ = err
+	}()
 
 	for {
 		rwc, err := l.Accept()
@@ -111,10 +114,15 @@ func (srv *Server) handleConn(conn net.Conn) {
 	sc := &serverConn{
 		conn: c,
 	}
-	defer sc.Close()
+	defer func() {
+		err := sc.Close()
+		if err != nil {
+			c.logger.Errorf("Failed to close serverConn: Err = %+v", err)
+		}
+	}()
 
 	if err := sc.Serve(); err != nil {
-		if err == io.EOF {
+		if ok := errors.Is(err, io.EOF); ok {
 			c.logger.Infof("Server closed")
 			return
 		}

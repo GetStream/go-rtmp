@@ -30,10 +30,15 @@ func DialWithDialer(dialer *net.Dialer, protocol, addr string, config *ConnConfi
 	return newClientConnWithSetup(rwc, config)
 }
 
+var addrError = &net.AddrError{
+	Err: "missing port in address",
+}
+
 func makeValidAddr(addr string) (string, error) {
 	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
-		if err, ok := err.(*net.AddrError); ok && err.Err == "missing port in address" {
+		ok := errors.As(err, &addrError)
+		if ok {
 			return makeValidAddr(addr + ":1935") // Default RTMP port
 		}
 		return "", err

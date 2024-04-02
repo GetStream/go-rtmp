@@ -54,7 +54,7 @@ func decodeChunkBasicHeader(r io.Reader, buf []byte, bh *chunkBasicHeader) error
 
 func encodeChunkBasicHeader(w io.Writer, mh *chunkBasicHeader) error {
 	buf := make([]byte, 3)
-	buf[0] = byte(mh.fmt&0x03) << 6 // 0b00000011 << 6
+	buf[0] = mh.fmt & 0x03 << 6 // 0b00000011 << 6
 
 	switch {
 	case mh.chunkStreamID >= 2 && mh.chunkStreamID <= 63:
@@ -70,13 +70,13 @@ func encodeChunkBasicHeader(w io.Writer, mh *chunkBasicHeader) error {
 
 	case mh.chunkStreamID >= 320 && mh.chunkStreamID <= 65599:
 		buf[0] |= byte(1 & 0x3f) // 0x00111111
-		buf[1] = byte(int(mh.chunkStreamID-64) % 256)
-		buf[2] = byte(int(mh.chunkStreamID-64) / 256)
+		buf[1] = byte((mh.chunkStreamID - 64) % 256)
+		buf[2] = byte((mh.chunkStreamID - 64) / 256)
 		_, err := w.Write(buf) // TODO: should check length?
 		return err
 
 	default:
-		return fmt.Errorf("Chunk stream id is out of range: %d must be in range [2, 65599]", mh.chunkStreamID)
+		return fmt.Errorf("chunk stream id is out of range: %d must be in range [2, 65599]", mh.chunkStreamID)
 	}
 }
 

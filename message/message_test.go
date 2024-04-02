@@ -16,6 +16,8 @@ import (
 )
 
 func assertEqualMessage(t *testing.T, expected, actual Message) {
+	t.Helper()
+
 	require.Equal(t, expected.TypeID(), actual.TypeID())
 
 	switch expected := expected.(type) {
@@ -54,6 +56,8 @@ func assertEqualMessage(t *testing.T, expected, actual Message) {
 }
 
 func assertEqualPayload(t *testing.T, expected, actual io.Reader) {
+	t.Helper()
+
 	expectedBin, err := io.ReadAll(expected)
 	require.Nil(t, err)
 	switch p := expected.(type) {

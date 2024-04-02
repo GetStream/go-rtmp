@@ -50,7 +50,7 @@ func (sc *serverConn) Serve() error {
 		if sc.conn.handler != nil {
 			return sc.conn.handler.OnError(err)
 		}
-		return errors.New("error occured while processing the data")
+		return errors.New("error occurred while processing the data")
 	}
 
 	return nil

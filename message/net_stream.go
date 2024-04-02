@@ -7,6 +7,8 @@
 
 package message
 
+import "github.com/pkg/errors"
+
 type NetStreamPublish struct {
 	CommandObject  interface{}
 	PublishingName string
@@ -15,9 +17,22 @@ type NetStreamPublish struct {
 
 func (t *NetStreamPublish) FromArgs(args ...interface{}) error {
 	// command := args[0] // will be nil
-	t.PublishingName = args[1].(string)
-	t.PublishingType = args[2].(string)
 
+	var ok bool
+	var n string
+
+	n, ok = args[1].(string)
+	if !ok {
+		return errors.New("Failed to map NetStreamPublish: args[1] is not a string.")
+	}
+	t.PublishingName = n
+
+	n, ok = args[2].(string)
+	if !ok {
+		return errors.New("Failed to map NetStreamPublish: args[2] is not a string.")
+	}
+
+	t.PublishingType = n
 	return nil
 }
 
@@ -37,8 +52,20 @@ type NetStreamPlay struct {
 
 func (t *NetStreamPlay) FromArgs(args ...interface{}) error {
 	// command := args[0] // will be nil
-	t.StreamName = args[1].(string)
-	t.Start = args[2].(int64)
+
+	var ok bool
+
+	n, ok := args[1].(string)
+	if !ok {
+		return errors.New("Failed to map NetStreamPlay: args[1] is not a string.")
+	}
+	t.StreamName = n
+
+	i, ok := args[2].(int64)
+	if !ok {
+		return errors.New("Failed to map NetStreamPlay: args[2] is not a int64.")
+	}
+	t.Start = i
 
 	return nil
 }
@@ -101,8 +128,12 @@ type NetStreamDeleteStream struct {
 
 func (t *NetStreamDeleteStream) FromArgs(args ...interface{}) error {
 	// args[0] is unknown, ignore
-	t.StreamID = args[1].(uint32)
+	s, ok := args[1].(uint32)
+	if !ok {
+		return errors.New("Failed to map NetStreamDeleteStream: args[1] is not a uint32.")
+	}
 
+	t.StreamID = s
 	return nil
 }
 
@@ -119,8 +150,12 @@ type NetStreamFCPublish struct {
 
 func (t *NetStreamFCPublish) FromArgs(args ...interface{}) error {
 	// args[0] is unknown, ignore
-	t.StreamName = args[1].(string)
+	n, ok := args[1].(string)
+	if !ok {
+		return errors.New("Failed to map NetStreamFCPublish: args[1] is not a string.")
+	}
 
+	t.StreamName = n
 	return nil
 }
 
@@ -137,8 +172,12 @@ type NetStreamFCUnpublish struct {
 
 func (t *NetStreamFCUnpublish) FromArgs(args ...interface{}) error {
 	// args[0] is unknown, ignore
-	t.StreamName = args[1].(string)
+	n, ok := args[1].(string)
+	if !ok {
+		return errors.New("Failed to map NetStreamFCUnpublish: args[1] is not a string.")
+	}
 
+	t.StreamName = n
 	return nil
 }
 
@@ -155,8 +194,12 @@ type NetStreamReleaseStream struct {
 
 func (t *NetStreamReleaseStream) FromArgs(args ...interface{}) error {
 	// args[0] is unknown, ignore
-	t.StreamName = args[1].(string)
+	n, ok := args[1].(string)
+	if !ok {
+		return errors.New("Failed to map NetStreamFCUnpublish: args[1] is not a string.")
+	}
 
+	t.StreamName = n
 	return nil
 }
 
@@ -167,14 +210,19 @@ func (t *NetStreamReleaseStream) ToArgs(ty EncodingType) ([]interface{}, error) 
 	}, nil
 }
 
-// NetStreamSetDataFrame - send data. AmfData is what will be encoded
+// NetStreamSetDataFrame - send data. AmfData is what will be encoded.
 type NetStreamSetDataFrame struct {
 	Payload []byte
 	AmfData interface{}
 }
 
 func (t *NetStreamSetDataFrame) FromArgs(args ...interface{}) error {
-	t.Payload = args[0].([]byte)
+	p, ok := args[0].([]byte)
+	if !ok {
+		return errors.New("Failed to map NetStreamSetDataFrame: args[0] is not a []byte.")
+	}
+
+	t.Payload = p
 	return nil
 }
 
@@ -191,8 +239,12 @@ type NetStreamGetStreamLength struct {
 
 func (t *NetStreamGetStreamLength) FromArgs(args ...interface{}) error {
 	// args[0] is unknown, ignore
-	t.StreamName = args[1].(string)
+	s, ok := args[1].(string)
+	if !ok {
+		return errors.New("Failed to map NetStreamGetStreamLength: args[1] is not a string.")
+	}
 
+	t.StreamName = s
 	return nil
 }
 

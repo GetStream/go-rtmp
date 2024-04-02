@@ -51,7 +51,7 @@ func (s streamState) String() string {
 }
 
 // streamHandler A handler per streams.
-// It holds a handler for each states and processes messages sent to the stream
+// It holds a handler for each states and processes messages sent to the stream.
 type streamHandler struct {
 	stream  *Stream
 	handler stateHandler // A handler for each states
@@ -62,7 +62,7 @@ type streamHandler struct {
 }
 
 // newEntryHandler Create an incomplete new instance of entryHandler.
-// msgHandler fields must be assigned by a caller of this function
+// msgHandler fields must be assigned by a caller of this function.
 func newStreamHandler(s *Stream) *streamHandler {
 	return &streamHandler{
 		stream: s,
@@ -89,7 +89,7 @@ func (h *streamHandler) Handle(chunkStreamID int, timestamp uint32, msg message.
 
 	default:
 		err := h.handler.onMessage(chunkStreamID, timestamp, msg)
-		if err == internal.ErrPassThroughMsg {
+		if ok := errors.Is(err, internal.ErrPassThroughMsg); ok {
 			return h.stream.userHandler().OnUnknownMessage(timestamp, msg)
 		}
 		return err
@@ -158,9 +158,10 @@ func (h *streamHandler) handleData(
 	}
 
 	err := h.handler.onData(chunkStreamID, timestamp, dataMsg, value)
-	if err == internal.ErrPassThroughMsg {
+	if ok := errors.Is(err, internal.ErrPassThroughMsg); ok {
 		return h.stream.userHandler().OnUnknownDataMessage(timestamp, dataMsg)
 	}
+
 	return err
 }
 
@@ -198,7 +199,7 @@ func (h *streamHandler) handleCommand(
 	}
 
 	err := h.handler.onCommand(chunkStreamID, timestamp, cmdMsg, value)
-	if err == internal.ErrPassThroughMsg {
+	if ok := errors.Is(err, internal.ErrPassThroughMsg); ok {
 		return h.stream.userHandler().OnUnknownCommandMessage(timestamp, cmdMsg)
 	}
 

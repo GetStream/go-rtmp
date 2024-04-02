@@ -63,11 +63,12 @@ func TestStreamerSingleChunk(t *testing.T) {
 	var actualMsg message.Message
 	err = dec.Decode(message.TypeID(r.messageTypeID), &actualMsg)
 	require.Nil(t, err)
-	require.Equal(t, uint32(timestamp), r.timestamp)
+	require.Equal(t, timestamp, r.timestamp)
 
 	// check message
 	require.Equal(t, actualMsg.TypeID(), msg.TypeID())
-	actualMsgT := actualMsg.(*message.VideoMessage)
+	actualMsgT, ok := actualMsg.(*message.VideoMessage)
+	require.True(t, ok)
 	actualContent, _ := io.ReadAll(actualMsgT.Payload)
 	require.Equal(t, actualContent, videoContent)
 }
@@ -119,11 +120,12 @@ func TestStreamerMultipleChunk(t *testing.T) {
 	var actualMsg message.Message
 	err = dec.Decode(message.TypeID(r.messageTypeID), &actualMsg)
 	require.Nil(t, err)
-	require.Equal(t, uint32(timestamp), r.timestamp)
+	require.Equal(t, timestamp, r.timestamp)
 
 	// check message
 	require.Equal(t, actualMsg.TypeID(), msg.TypeID())
-	actualMsgT := actualMsg.(*message.VideoMessage)
+	actualMsgT, ok := actualMsg.(*message.VideoMessage)
+	require.True(t, ok)
 	actualContent, _ := io.ReadAll(actualMsgT.Payload)
 	require.Equal(t, actualContent, videoContent)
 }
@@ -240,7 +242,7 @@ func TestStreamerChunkExample1(t *testing.T) {
 					require.NotNil(t, r)
 
 					require.Equal(t, rc.fmt, r.basicHeader.fmt)
-					require.Equal(t, uint32(rc.timestamp), r.timestamp)
+					require.Equal(t, rc.timestamp, r.timestamp)
 					require.Equal(t, rc.isComplete, r.completed)
 				})
 			}
@@ -315,7 +317,7 @@ func TestStreamerChunkExample2(t *testing.T) {
 					bin := make([]byte, wc.length)
 
 					w.messageLength = uint32(len(bin))
-					w.messageTypeID = byte(wc.messageTypeId)
+					w.messageTypeID = wc.messageTypeId
 					w.messageStreamID = tc.messageStreamID
 					w.timestamp = wc.timestamp
 					w.buf.Write(bin)
@@ -335,7 +337,7 @@ func TestStreamerChunkExample2(t *testing.T) {
 					require.Nil(t, err)
 					require.NotNil(t, r)
 					require.Equal(t, rc.fmt, r.basicHeader.fmt)
-					require.Equal(t, uint32(rc.delta), r.messageHeader.timestampDelta)
+					require.Equal(t, rc.delta, r.messageHeader.timestampDelta)
 					require.Equal(t, rc.isComplete, r.completed)
 				})
 			}
@@ -391,7 +393,11 @@ func TestChunkStreamerStreamsLimitation(t *testing.T) {
 	streamer := NewChunkStreamer(inbuf, outbuf, &StreamControlStateConfig{
 		MaxChunkStreams: 1,
 	})
-	defer streamer.Close()
+
+	t.Cleanup(func() {
+		err := streamer.Close()
+		require.Nil(t, err)
+	})
 
 	{
 		_, err := streamer.prepareChunkReader(0)

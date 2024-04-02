@@ -13,7 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// ControlStreamID StreamID 0 is a control stream
+// ControlStreamID StreamID 0 is a control stream.
 const ControlStreamID = 0
 
 type streams struct {

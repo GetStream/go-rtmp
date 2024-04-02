@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"sync"
 
 	flvtag "github.com/yutopp/go-flv/tag"
@@ -76,7 +77,11 @@ func (p *Pub) Publish(flv *flvtag.FlvTag) error {
 		}
 
 	case *flvtag.VideoData:
-		d := flv.Data.(*flvtag.VideoData)
+		d, ok := flv.Data.(*flvtag.VideoData)
+		if !ok {
+			return fmt.Errorf("failed to cast to VideoData")
+		}
+
 		if d.AVCPacketType == flvtag.AVCPacketTypeSequenceHeader {
 			p.avcSeqHeader = flv
 		}
@@ -132,7 +137,7 @@ func (s *Sub) onEvent(flv *flvtag.FlvTag) error {
 	return s.eventCallback(flv)
 }
 
-func (s *Sub) Close() error {
+func (s *Sub) Close() error { //nolint: unparam
 	if s.closed {
 		return nil
 	}
@@ -148,19 +153,30 @@ func cloneView(flv *flvtag.FlvTag) *flvtag.FlvTag {
 
 	switch flv.Data.(type) {
 	case *flvtag.AudioData:
-		dCloned := *v.Data.(*flvtag.AudioData)
+		dCloned := *v.Data.(*flvtag.AudioData) //nolint: forcetypeassert
 		v.Data = &dCloned
 
-		dCloned.Data = bytes.NewBuffer(dCloned.Data.(*bytes.Buffer).Bytes())
+		d, ok := dCloned.Data.(*bytes.Buffer)
+		if !ok {
+			fmt.Println("unexpected")
+			return nil
+		}
+
+		dCloned.Data = bytes.NewBuffer(d.Bytes())
 
 	case *flvtag.VideoData:
-		dCloned := *v.Data.(*flvtag.VideoData)
+		dCloned := *v.Data.(*flvtag.VideoData) //nolint: forcetypeassert
 		v.Data = &dCloned
 
-		dCloned.Data = bytes.NewBuffer(dCloned.Data.(*bytes.Buffer).Bytes())
+		d, ok := dCloned.Data.(*bytes.Buffer)
+		if !ok {
+			fmt.Println("unexpected")
+			return nil
+		}
+		dCloned.Data = bytes.NewBuffer(d.Bytes())
 
 	case *flvtag.ScriptData:
-		dCloned := *v.Data.(*flvtag.ScriptData)
+		dCloned := *v.Data.(*flvtag.ScriptData) //nolint: forcetypeassert
 		v.Data = &dCloned
 
 	default:

@@ -105,7 +105,7 @@ var (
 	serverVersion               = []byte{0x0D, 0x0E, 0x0A, 0x0D}
 )
 
-// 30+32
+// 30+32.
 var clientKey = []byte{
 	'G', 'e', 'n', 'u', 'i', 'n', 'e', ' ', 'A', 'd', 'o', 'b', 'e', ' ',
 	'F', 'l', 'a', 's', 'h', ' ', 'P', 'l', 'a', 'y', 'e', 'r', ' ',
@@ -116,7 +116,7 @@ var clientKey = []byte{
 	0x93, 0xB8, 0xE6, 0x36, 0xCF, 0xEB, 0x31, 0xAE,
 }
 
-// 36+32
+// 36+32.
 var serverKey = []byte{
 	'G', 'e', 'n', 'u', 'i', 'n', 'e', ' ', 'A', 'd', 'o', 'b', 'e', ' ',
 	'F', 'l', 'a', 's', 'h', ' ', 'M', 'e', 'd', 'i', 'a', ' ',
@@ -138,8 +138,8 @@ func init() {
 	}
 }
 
-// c0c1 clientPartKey serverFullKey
-// s0s1 serverPartKey clientFullKey
+// c0c1 clientPartKey serverFullKey.
+// s0s1 serverPartKey clientFullKey.
 func parseChallenge(b []byte, peerKey []byte, key []byte) []byte {
 	ver := binary.BigEndian.Uint32(b[5:])
 	if ver == 0 {
@@ -177,7 +177,7 @@ func findDigest(b []byte, base int, key []byte) int {
 	return -1
 }
 
-// <b> could be `c1` or `s1` or `s2`
+// <b> could be `c1` or `s1` or `s2`.
 func makeDigestWithoutCenterPart(b []byte, offs int, key []byte, out []byte) {
 	mac := hmac.New(sha256.New, key)
 	// left

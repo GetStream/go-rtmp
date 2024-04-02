@@ -14,19 +14,24 @@ import (
 )
 
 func TestClientValidAddr(t *testing.T) {
-	addr, err := makeValidAddr("host:123")
-	require.Equal(t, nil, err)
-	require.Equal(t, "host:123", addr)
-
-	addr, err = makeValidAddr("host")
-	require.Equal(t, nil, err)
-	require.Equal(t, "host:1935", addr)
-
-	addr, err = makeValidAddr("host:")
-	require.Equal(t, nil, err)
-	require.Equal(t, "host:", addr)
-
-	addr, err = makeValidAddr(":1111")
-	require.Equal(t, nil, err)
-	require.Equal(t, ":1111", addr)
+	{
+		addr, err := makeValidAddr("host:123")
+		require.Equal(t, nil, err)
+		require.Equal(t, "host:123", addr)
+	}
+	{
+		addr, err := makeValidAddr("host")
+		require.Equal(t, nil, err)
+		require.Equal(t, "host:1935", addr)
+	}
+	{
+		addr, err := makeValidAddr("host:")
+		require.Equal(t, nil, err)
+		require.Equal(t, "host:", addr)
+	}
+	{
+		addr, err := makeValidAddr(":1111")
+		require.Equal(t, nil, err)
+		require.Equal(t, ":1111", addr)
+	}
 }

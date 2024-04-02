@@ -53,7 +53,7 @@ type ConnConfig struct {
 }
 
 func (cb *ConnConfig) normalize() *ConnConfig {
-	c := ConnConfig(*cb)
+	c := *cb
 
 	if c.Handler == nil {
 		c.Handler = &DefaultHandler{}
@@ -192,7 +192,7 @@ func (c *Conn) handleMessage(chunkStreamID int, timestamp uint32, cmsg *ChunkMes
 	}
 
 	if err := stream.handle(chunkStreamID, timestamp, cmsg.Message); err != nil {
-		switch err := err.(type) {
+		switch err := err.(type) { //nolint: errorlint
 		case *message.UnknownDataBodyDecodeError, *message.UnknownCommandBodyDecodeError:
 			// Ignore unknown messsage body
 			c.logger.Warnf("Ignored unknown message body: Err = %+v", err)

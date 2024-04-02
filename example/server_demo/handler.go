@@ -17,7 +17,7 @@ import (
 
 var _ rtmp.Handler = (*Handler)(nil)
 
-// Handler An RTMP connection handler
+// Handler An RTMP connection handler.
 type Handler struct {
 	rtmp.DefaultHandler
 	flvFile *os.File

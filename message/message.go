@@ -31,12 +31,12 @@ const (
 	TypeIDAggregateMessage        TypeID = 22
 )
 
-// Message
+// Message.
 type Message interface {
 	TypeID() TypeID
 }
 
-// SetChunkSize (1)
+// SetChunkSize (1).
 type SetChunkSize struct {
 	ChunkSize uint32
 }
@@ -45,7 +45,7 @@ func (m *SetChunkSize) TypeID() TypeID {
 	return TypeIDSetChunkSize
 }
 
-// AbortMessage (2)
+// AbortMessage (2).
 type AbortMessage struct {
 	ChunkStreamID uint32
 }
@@ -54,7 +54,7 @@ func (m *AbortMessage) TypeID() TypeID {
 	return TypeIDAbortMessage
 }
 
-// Ack (3)
+// Ack (3).
 type Ack struct {
 	SequenceNumber uint32
 }
@@ -63,7 +63,7 @@ func (m *Ack) TypeID() TypeID {
 	return TypeIDAck
 }
 
-// UserCtrl (4)
+// UserCtrl (4).
 type UserCtrl struct {
 	Event UserCtrlEvent
 }
@@ -72,7 +72,7 @@ func (m *UserCtrl) TypeID() TypeID {
 	return TypeIDUserCtrl
 }
 
-// WinAckSize (5)
+// WinAckSize (5).
 type WinAckSize struct {
 	Size int32
 }
@@ -81,7 +81,7 @@ func (m *WinAckSize) TypeID() TypeID {
 	return TypeIDWinAckSize
 }
 
-// SetPeerBandwidth (6)
+// SetPeerBandwidth (6).
 type LimitType uint8
 
 const (
@@ -99,7 +99,7 @@ func (m *SetPeerBandwidth) TypeID() TypeID {
 	return TypeIDSetPeerBandwidth
 }
 
-// AudioMessage(8)
+// AudioMessage(8).
 type AudioMessage struct {
 	Payload io.Reader
 }
@@ -108,7 +108,7 @@ func (m *AudioMessage) TypeID() TypeID {
 	return TypeIDAudioMessage
 }
 
-// VideoMessage(9)
+// VideoMessage(9).
 type VideoMessage struct {
 	Payload io.Reader
 }
@@ -117,7 +117,7 @@ func (m *VideoMessage) TypeID() TypeID {
 	return TypeIDVideoMessage
 }
 
-// DataMessage (15, 18)
+// DataMessage (15, 18).
 type DataMessage struct {
 	Name     string
 	Encoding EncodingType
@@ -135,7 +135,7 @@ func (m *DataMessage) TypeID() TypeID {
 	}
 }
 
-// SharedObjectMessage (16, 19)
+// SharedObjectMessage (16, 19).
 type SharedObjectMessage struct{}
 
 type SharedObjectMessageAMF3 struct {
@@ -154,7 +154,7 @@ func (m *SharedObjectMessageAMF0) TypeID() TypeID {
 	return TypeIDSharedObjectMessageAMF0
 }
 
-// CommandMessage (17, 20)
+// CommandMessage (17, 20).
 type CommandMessage struct {
 	CommandName   string
 	TransactionID int64
@@ -173,7 +173,7 @@ func (m *CommandMessage) TypeID() TypeID {
 	}
 }
 
-// AggregateMessage (22)
+// AggregateMessage (22).
 type AggregateMessage struct{}
 
 func (m *AggregateMessage) TypeID() TypeID {

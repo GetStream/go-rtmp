@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"fmt"
 
 	"github.com/guerinoni/go-rtmp"
 	rtmpmsg "github.com/guerinoni/go-rtmp/message"
@@ -15,7 +16,10 @@ func onEventCallback(conn *rtmp.Conn, streamID uint32) func(flv *flvtag.FlvTag) 
 
 		switch flv.Data.(type) {
 		case *flvtag.AudioData:
-			d := flv.Data.(*flvtag.AudioData)
+			d, ok := flv.Data.(*flvtag.AudioData)
+			if !ok {
+				return fmt.Errorf("invalid data type: AudioData")
+			}
 
 			// Consume flv payloads (d)
 			if err := flvtag.EncodeAudioData(buf, d); err != nil {
@@ -33,7 +37,10 @@ func onEventCallback(conn *rtmp.Conn, streamID uint32) func(flv *flvtag.FlvTag) 
 			})
 
 		case *flvtag.VideoData:
-			d := flv.Data.(*flvtag.VideoData)
+			d, ok := flv.Data.(*flvtag.VideoData)
+			if !ok {
+				return fmt.Errorf("invalid data type: VideoData")
+			}
 
 			// Consume flv payloads (d)
 			if err := flvtag.EncodeVideoData(buf, d); err != nil {
@@ -51,7 +58,10 @@ func onEventCallback(conn *rtmp.Conn, streamID uint32) func(flv *flvtag.FlvTag) 
 			})
 
 		case *flvtag.ScriptData:
-			d := flv.Data.(*flvtag.ScriptData)
+			d, ok := flv.Data.(*flvtag.ScriptData)
+			if !ok {
+				return fmt.Errorf("invalid data type: ScriptData")
+			}
 
 			// Consume flv payloads (d)
 			if err := flvtag.EncodeScriptData(buf, d); err != nil {

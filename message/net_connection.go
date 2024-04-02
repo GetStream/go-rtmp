@@ -39,7 +39,10 @@ type NetConnectionConnectCommand struct {
 }
 
 func (t *NetConnectionConnect) FromArgs(args ...interface{}) error {
-	command := args[0].(map[string]interface{})
+	command, ok := args[0].(map[string]interface{})
+	if !ok {
+		return errors.New("Failed to map NetConnectionConnect: args[0] is not a map.")
+	}
 	if err := mapstructure.Decode(command, &t.Command); err != nil {
 		return errors.Wrapf(err, "Failed to mapping NetConnectionConnect")
 	}
@@ -111,15 +114,19 @@ func (t *NetConnectionCreateStream) ToArgs(ty EncodingType) ([]interface{}, erro
 	}, nil
 }
 
-// TODO: fix for error messages
+// TODO: fix for error messages.
 type NetConnectionCreateStreamResult struct {
 	StreamID uint32
 }
 
 func (t *NetConnectionCreateStreamResult) FromArgs(args ...interface{}) error {
 	// args[0] is unknown, ignore
-	t.StreamID = args[1].(uint32)
+	s, ok := args[1].(uint32)
+	if !ok {
+		return errors.New("Failed to map NetConnectionCreateStreamResult: args[1] is not a uint32.")
+	}
 
+	t.StreamID = s
 	return nil
 }
 
@@ -136,8 +143,12 @@ type NetConnectionReleaseStream struct {
 
 func (t *NetConnectionReleaseStream) FromArgs(args ...interface{}) error {
 	// args[0] is unknown, ignore
-	t.StreamName = args[1].(string)
+	s, ok := args[1].(string)
+	if !ok {
+		return errors.New("Failed to map NetConnectionReleaseStream: args[1] is not a string.")
+	}
 
+	t.StreamName = s
 	return nil
 }
 

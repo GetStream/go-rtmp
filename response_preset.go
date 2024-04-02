@@ -24,7 +24,7 @@ type DefaultResponsePreset struct {
 	ServerConnectResultData       map[string]interface{}
 }
 
-// NewDefaultResponsePreset gives an instance of DefaultResponsePreset
+// NewDefaultResponsePreset gives an instance of DefaultResponsePreset.
 func NewDefaultResponsePreset() *DefaultResponsePreset {
 	return &DefaultResponsePreset{
 		// Sent to clients as result when Connect message is received

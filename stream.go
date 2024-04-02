@@ -17,7 +17,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Stream represents a logical message stream
+// Stream represents a logical message stream.
 type Stream struct {
 	streamID     uint32
 	encTy        message.EncodingType
@@ -96,7 +96,10 @@ func (s *Stream) Connect(
 		if err := message.DecodeBodyConnectResult(t.body, amfDec, &value); err != nil {
 			return nil, errors.Wrap(err, "Failed to decode result")
 		}
-		result := value.(*message.NetConnectionConnectResult)
+		result, ok := value.(*message.NetConnectionConnectResult)
+		if !ok {
+			return nil, errors.New("Failed to cast result")
+		}
 
 		if t.commandName == "_error" {
 			return nil, &ConnectRejectedError{
@@ -177,7 +180,10 @@ func (s *Stream) CreateStream(body *message.NetConnectionCreateStream, chunkSize
 		if err := message.DecodeBodyCreateStreamResult(t.body, amfDec, &value); err != nil {
 			return nil, errors.Wrap(err, "Failed to decode result")
 		}
-		result := value.(*message.NetConnectionCreateStreamResult)
+		result, ok := value.(*message.NetConnectionCreateStreamResult)
+		if !ok {
+			return nil, errors.New("Failed to cast result")
+		}
 
 		if t.commandName == "_error" {
 			return nil, &CreateStreamRejectedError{

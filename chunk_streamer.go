@@ -106,7 +106,7 @@ func (cs *ChunkStreamer) Read(cmsg *ChunkMessage) (int, uint32, error) {
 
 	cmsg.StreamID = reader.messageStreamID
 
-	return reader.basicHeader.chunkStreamID, uint32(reader.timestamp), nil
+	return reader.basicHeader.chunkStreamID, reader.timestamp, nil
 }
 
 func (cs *ChunkStreamer) Write(

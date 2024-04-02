@@ -233,7 +233,7 @@ func DecodeBodyPlay(_ io.Reader, d AMFDecoder, v *AMFConvertible) error {
 		//  'NetStream.play(streamName,null)'
 		// set start to 0 to avoid it.
 		//
-		if err != io.EOF {
+		if errors.Is(err, io.EOF) {
 			return errors.Wrap(err, "Failed to decode 'play' args[2]")
 		}
 		start = 0
