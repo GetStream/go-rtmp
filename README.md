@@ -2,7 +2,11 @@
 
 RTMP 1.0 server/client library written in Go.
 
-*Work in progress*
+## Tested on
+- OBS Studio
+- restream.io
+- ffmpeg
+- gstreamer (gst-launch)
 
 ## Installation
 
@@ -14,9 +18,7 @@ See also [server_demo](https://github.com/guerinoni/go-rtmp/tree/master/example/
 
 ## Documentation
 
-- [GoDoc](https://pkg.go.dev/github.com/guerinoni/go-rtmp)
-- [REAL-TIME MESSAGING PROTOCOL (RTMP) SPECIFICATION](https://www.adobe.com/devnet/rtmp.html)
-
+- https://rtmp.veriskope.com/docs/spec
 
 ## NOTES
 
