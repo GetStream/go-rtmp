@@ -26,10 +26,8 @@ type ClientConn struct {
 func newClientConnWithSetup(c net.Conn, config *ConnConfig) (*ClientConn, error) {
 	conn := newConn(c, config)
 
-	if err := handshake.HandshakeWithServer(conn.rwc, conn.rwc, &handshake.Config{
-		SkipHandshakeVerification: conn.config.SkipHandshakeVerification,
-	}); err != nil {
-		_ = conn.Close()
+	hc := &handshake.HandshakeClientComplex{}
+	if err := handshake.Handshake(hc, conn.rwc); err != nil {
 		return nil, errors.Wrap(err, "Failed to handshake")
 	}
 

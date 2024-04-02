@@ -136,8 +136,7 @@ func (m *DataMessage) TypeID() TypeID {
 }
 
 // SharedObjectMessage (16, 19)
-type SharedObjectMessage struct {
-}
+type SharedObjectMessage struct{}
 
 type SharedObjectMessageAMF3 struct {
 	SharedObjectMessage
@@ -175,8 +174,7 @@ func (m *CommandMessage) TypeID() TypeID {
 }
 
 // AggregateMessage (22)
-type AggregateMessage struct {
-}
+type AggregateMessage struct{}
 
 func (m *AggregateMessage) TypeID() TypeID {
 	return TypeIDAggregateMessage

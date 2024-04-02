@@ -11,5 +11,7 @@ import (
 	"errors"
 )
 
-var ErrChunkIsNotCompleted = errors.New("Chunk is not completed")
-var ErrPassThroughMsg = errors.New("Msg is passed through")
+var (
+	ErrChunkIsNotCompleted = errors.New("Chunk is not completed")
+	ErrPassThroughMsg      = errors.New("Msg is passed through")
+)

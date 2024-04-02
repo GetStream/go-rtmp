@@ -14,7 +14,7 @@ type NetStreamPublish struct {
 }
 
 func (t *NetStreamPublish) FromArgs(args ...interface{}) error {
-	//command := args[0] // will be nil
+	// command := args[0] // will be nil
 	t.PublishingName = args[1].(string)
 	t.PublishingType = args[2].(string)
 
@@ -36,7 +36,7 @@ type NetStreamPlay struct {
 }
 
 func (t *NetStreamPlay) FromArgs(args ...interface{}) error {
-	//command := args[0] // will be nil
+	// command := args[0] // will be nil
 	t.StreamName = args[1].(string)
 	t.Start = args[2].(int64)
 
@@ -203,8 +203,7 @@ func (t *NetStreamGetStreamLength) ToArgs(ty EncodingType) ([]interface{}, error
 	}, nil
 }
 
-type NetStreamPing struct {
-}
+type NetStreamPing struct{}
 
 func (t *NetStreamPing) FromArgs(args ...interface{}) error {
 	// args[0] is unknown, ignore
@@ -218,8 +217,7 @@ func (t *NetStreamPing) ToArgs(ty EncodingType) ([]interface{}, error) {
 	}, nil
 }
 
-type NetStreamCloseStream struct {
-}
+type NetStreamCloseStream struct{}
 
 func (t *NetStreamCloseStream) FromArgs(args ...interface{}) error {
 	// args[0] is unknown, ignore
