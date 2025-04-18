@@ -200,16 +200,17 @@ func (cs *ChunkStreamer) readChunk() (*ChunkStreamReader, error) {
 	}
 	//cs.logger.Debugf("(READ) BasicHeader = %+v", bh)
 
-	var mh chunkMessageHeader
-	if err := decodeChunkMessageHeader(cs.r, bh.fmt, cs.cacheBuffer, &mh); err != nil {
-		return nil, err
-	}
-	//cs.logger.Debugf("(READ) MessageHeader = %+v", mh)
-
 	reader, err := cs.prepareChunkReader(bh.chunkStreamID)
 	if err != nil {
 		return nil, errors.Wrapf(err, "Failed to prepare chunk reader")
 	}
+
+	var mh chunkMessageHeader
+	if err := decodeChunkMessageHeader(cs.r, bh.fmt, cs.cacheBuffer, &mh, reader.extendedTimestampMode); err != nil {
+		return nil, err
+	}
+	//cs.logger.Debugf("(READ) MessageHeader = %+v", mh)
+
 	if reader.completed {
 		reader.buf.Reset()
 		reader.completed = false
@@ -225,17 +226,27 @@ func (cs *ChunkStreamer) readChunk() (*ChunkStreamReader, error) {
 		reader.messageLength = mh.messageLength
 		reader.messageTypeID = mh.messageTypeID
 		reader.messageStreamID = mh.messageStreamID
+		reader.extendedTimestampMode = mh.extendedTimestampMode
 
 	case 1:
 		reader.timestampDelta = mh.timestampDelta
 		reader.messageLength = mh.messageLength
 		reader.messageTypeID = mh.messageTypeID
+		reader.extendedTimestampMode = mh.extendedTimestampMode
 
 	case 2:
 		reader.timestampDelta = mh.timestampDelta
+		reader.extendedTimestampMode = mh.extendedTimestampMode
 
 	case 3:
-		// DO NOTHING
+		// DO NOTHING unless an extended timestamp was used in preceding messages
+		switch reader.extendedTimestampMode {
+		case ExtendedTimestampUsed:
+			reader.timestamp = mh.timestamp
+
+		case ExtendedTimestampDeltaUsed:
+			reader.timestampDelta = mh.timestampDelta
+		}
 
 	default:
 		panic("unsupported chunk") // TODO: fix
