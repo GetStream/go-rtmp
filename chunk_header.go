@@ -172,6 +172,8 @@ func decodeChunkMessageHeader(r io.Reader, fmt byte, buf []byte, mh *chunkMessag
 			}
 			mh.timestampDelta = binary.BigEndian.Uint32(cache32bits)
 		}
+		// maintain timestamp mode while no 0 | 1 | 2 fmts
+		mh.extendedTimestampMode = extendedTimestampMode
 
 	default:
 		panic("Unexpected fmt")
