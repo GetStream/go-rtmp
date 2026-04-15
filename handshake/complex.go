@@ -70,11 +70,11 @@ func digestBlockStart(scheme int) int {
 // within a 1536-byte C1/S1 packet.
 //
 // DigestBlock layout (764 bytes total):
-//   [0:4]   digest_offset  (big-endian uint32)
+//   [0:4]   digest_offset  (four bytes whose *sum* gives the offset, per RTMPDump)
 //   [4:764] digest data    (760 bytes, digest lives at offset%728 within this region)
 func digestPos(data []byte, scheme int) int {
 	start := digestBlockStart(scheme)
-	offset := binary.BigEndian.Uint32(data[start : start+4])
+	offset := uint32(data[start]) + uint32(data[start+1]) + uint32(data[start+2]) + uint32(data[start+3])
 	return start + 4 + int(offset%(760-32))
 }
 
