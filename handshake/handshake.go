@@ -12,7 +12,6 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"io"
-	"log"
 	"time"
 
 	"github.com/pkg/errors"
@@ -66,8 +65,7 @@ func HandshakeWithClient(r io.Reader, w io.Writer, config *Config) error {
 		c1DigestPos   int
 		s1Digest      []byte
 	)
-	c1HasVersion := c1[4]|c1[5]|c1[6]|c1[7] != 0
-	if c1HasVersion {
+	if c1[4]|c1[5]|c1[6]|c1[7] != 0 {
 		for _, scheme := range []int{0, 1} {
 			if pos, ok := validateC1Complex(c1, scheme); ok {
 				useComplex = true
@@ -76,19 +74,7 @@ func HandshakeWithClient(r io.Reader, w io.Writer, config *Config) error {
 				break
 			}
 		}
-		if !useComplex {
-			log.Printf("handshake: C1 has non-zero version %x but failed complex validation (scheme 0 and 1); falling back to simple handshake", c1[4:8])
-		}
 	}
-	log.Printf("handshake: mode=%s c0_version=%d c1_version=%x c1_time=%x useComplex=%v complexScheme=%d",
-		func() string {
-			if useComplex {
-				return "complex"
-			}
-			return "simple"
-		}(),
-		c0[0], c1[4:8], c1[0:4], useComplex, complexScheme,
-	)
 
 	// Build S0 + S1 + S2 in one buffer and send atomically.
 	out := make([]byte, 1+1536+1536)
@@ -146,42 +132,21 @@ func HandshakeWithClient(r io.Reader, w io.Writer, config *Config) error {
 	}
 
 	if useComplex {
-		// C2 verification is non-fatal per spec §7 — compute and compare but
-		// always continue regardless of the result.
 		fpDigestKey := hmacSHA256(s1Digest, fpKey)
 		expected := hmacSHA256(c2[:1504], fpDigestKey)
-		if !bytes.Equal(expected, c2[1504:]) {
-			log.Printf("handshake: complex C2 digest mismatch (advisory, continuing): scheme=%d c2_digest=%x expected=%x",
-				complexScheme, c2[1504:], expected)
-		} else {
-			log.Printf("handshake: complex C2 digest OK: scheme=%d", complexScheme)
+		if bytes.Equal(expected, c2[1504:]) {
+			return nil
 		}
-		return nil
+		// Complex C2 digest failed; fall back to simple random echo.
+		if bytes.Equal(c2[8:], s1Bytes[8:]) {
+			return nil
+		}
+		return errors.Errorf("handshake failed: complex C2 digest mismatch (scheme=%d) and simple random echo also failed", complexScheme)
 	}
 
-	// Simple handshake: C2.Random (bytes 8–1535) must echo S1.Random.
+	// Simple handshake from the start: C2.Random (bytes 8–1535) must echo S1.Random.
 	if !bytes.Equal(c2[8:], s1Bytes[8:]) {
-		firstMismatch := -1
-		for i := 8; i < 1536; i++ {
-			if c2[i] != s1Bytes[i] {
-				firstMismatch = i
-				break
-			}
-		}
-		return errors.Errorf(
-			"Random echo is not matched (simple handshake, c1_had_version=%v):"+
-				" c0_version=%d"+
-				" c1_version=%x c1_time=%x c1_random[:8]=%x"+
-				" s1_version=%x s1_time=%x s1_random[:8]=%x"+
-				" c2_time=%x c2_time2=%x c2_random[:8]=%x"+
-				" first_mismatch_byte=%d",
-			c1HasVersion,
-			c0[0],
-			c1[4:8], c1[0:4], c1[8:16],
-			s1Bytes[4:8], s1Bytes[0:4], s1Bytes[8:16],
-			c2[0:4], c2[4:8], c2[8:16],
-			firstMismatch,
-		)
+		return errors.New("handshake failed: simple random echo mismatch")
 	}
 
 	return nil
