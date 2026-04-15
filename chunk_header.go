@@ -19,7 +19,7 @@ type chunkBasicHeader struct {
 }
 
 func decodeChunkBasicHeader(r io.Reader, buf []byte, bh *chunkBasicHeader) error {
-	if buf == nil || len(buf) < 3 {
+	if len(buf) < 3 {
 		buf = make([]byte, 3)
 	}
 
@@ -88,7 +88,7 @@ type chunkMessageHeader struct {
 }
 
 func decodeChunkMessageHeader(r io.Reader, fmt byte, buf []byte, mh *chunkMessageHeader, extendedTimestampMode ExtendedTimestampMode) error {
-	if buf == nil || len(buf) < 11 {
+	if len(buf) < 11 {
 		buf = make([]byte, 11)
 	}
 	cache32bits := make([]byte, 4)
