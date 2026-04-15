@@ -60,15 +60,15 @@ func HandshakeWithClient(r io.Reader, w io.Writer, config *Config) error {
 	// A zero peer version means simple handshake; non-zero triggers complex
 	// validation with scheme-0 → scheme-1 → simple fallback (spec §6.1, §8).
 	var (
-		useComplex    bool
+		useFP9    bool
 		complexScheme int
 		c1DigestPos   int
 		s1Digest      []byte
 	)
 	if c1[4]|c1[5]|c1[6]|c1[7] != 0 {
 		for _, scheme := range []int{0, 1} {
-			if pos, ok := validateC1Complex(c1, scheme); ok {
-				useComplex = true
+			if pos, ok := validateC1FP9(c1, scheme); ok {
+				useFP9 = true
 				complexScheme = scheme
 				c1DigestPos = pos
 				break
@@ -82,7 +82,7 @@ func HandshakeWithClient(r io.Reader, w io.Writer, config *Config) error {
 
 	var s1Bytes []byte
 
-	if useComplex {
+	if useFP9 {
 		var s1DigestPos int
 		var err error
 		s1Bytes, s1Digest, s1DigestPos, err = buildComplexS1(complexScheme)
@@ -131,7 +131,7 @@ func HandshakeWithClient(r io.Reader, w io.Writer, config *Config) error {
 		return nil
 	}
 
-	if useComplex {
+	if useFP9 {
 		fpDigestKey := hmacSHA256(s1Digest, fpKey)
 		expected := hmacSHA256(c2[:1504], fpDigestKey)
 		if bytes.Equal(expected, c2[1504:]) {

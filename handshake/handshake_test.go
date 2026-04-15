@@ -262,7 +262,7 @@ func TestHandshakeWithClient_Complex_FallbackOnInvalidDigest(t *testing.T) {
 	require.NoError(t, <-done)
 
 	// Verify: validating this C1 with any scheme must fail.
-	_, ok0 := validateC1Complex(c1, 0)
-	_, ok1 := validateC1Complex(c1, 1)
+	_, ok0 := validateC1FP9(c1, 0)
+	_, ok1 := validateC1FP9(c1, 1)
 	require.False(t, ok0 || ok1, "C1 with random bytes should not pass complex validation")
 }

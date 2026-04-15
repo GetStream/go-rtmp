@@ -78,9 +78,9 @@ func digestPos(data []byte, scheme int) int {
 	return start + 4 + int(offset%(760-32))
 }
 
-// validateC1Complex checks whether C1 contains a valid complex-handshake
+// validateC1FP9 checks whether C1 contains a valid complex-handshake
 // digest for the given scheme. Returns (digest position, true) if valid.
-func validateC1Complex(c1 []byte, scheme int) (int, bool) {
+func validateC1FP9(c1 []byte, scheme int) (int, bool) {
 	pos := digestPos(c1, scheme)
 
 	// Message is all of C1 except the 32-byte digest region (total 1504 bytes).
