@@ -53,7 +53,7 @@ func (h *serverDataInactiveHandler) onCommand(
 
 	switch cmd := body.(type) {
 	case *message.NetStreamPublish:
-		l.Infof("Publisher is comming: %#v", cmd)
+		l.Infof("Publisher is comming: PublishingType = %s", cmd.PublishingType)
 
 		streamCtx := &StreamContext{
 			StreamID: h.sh.stream.streamID,
@@ -81,7 +81,7 @@ func (h *serverDataInactiveHandler) onCommand(
 		return nil
 
 	case *message.NetStreamPlay:
-		l.Infof("Player is comming: %#v", cmd)
+		l.Infof("Player is comming: Start = %d", cmd.Start)
 
 		streamCtx := &StreamContext{
 			StreamID: h.sh.stream.streamID,
