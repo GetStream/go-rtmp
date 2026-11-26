@@ -111,7 +111,7 @@ func (h *serverControlConnectedHandler) onCommand(
 		return nil
 
 	case *message.NetConnectionReleaseStream:
-		l.Infof("Release stream...: StreamName = %s", cmd.StreamName)
+		l.Info("Release stream...")
 
 		if err := h.sh.stream.userHandler().OnReleaseStream(timestamp, cmd); err != nil {
 			return err
@@ -122,7 +122,7 @@ func (h *serverControlConnectedHandler) onCommand(
 		return nil
 
 	case *message.NetStreamFCPublish:
-		l.Infof("FCPublish stream...: StreamName = %s", cmd.StreamName)
+		l.Info("FCPublish stream...")
 
 		if err := h.sh.stream.userHandler().OnFCPublish(timestamp, cmd); err != nil {
 			return err
@@ -133,7 +133,7 @@ func (h *serverControlConnectedHandler) onCommand(
 		return nil
 
 	case *message.NetStreamFCUnpublish:
-		l.Infof("FCUnpublish stream...: StreamName = %s", cmd.StreamName)
+		l.Info("FCUnpublish stream...")
 
 		if err := h.sh.stream.userHandler().OnFCUnpublish(timestamp, cmd); err != nil {
 			return err

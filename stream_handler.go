@@ -136,7 +136,7 @@ func (h *streamHandler) State() streamState {
 func (h *streamHandler) Logger() *logrus.Entry {
 	if h.loggerEntry == nil {
 		h.loggerEntry = h.stream.logger().WithFields(logrus.Fields{
-			"stream_id": h.stream.streamID,
+			"rtmp_stream_id": h.stream.streamID,
 		})
 	}
 
